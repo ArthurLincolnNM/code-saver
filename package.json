@@ -1,0 +1,58 @@
+{
+  "name": "code-saver",
+  "title": "Code Saver",
+  "description": "Store your code snippets and export them freely when you need it.",
+  "categories": ["Developer Tools", "Productivity"],
+  "license": "MIT",
+  "author": "Gnosnay",
+  "icon": "extension_icon.png",
+  "commands": [
+    {
+      "name": "search-snippets",
+      "title": "Search Code Snippets",
+      "subtitle": "Code Saver",
+      "description": "Search your snippets.",
+      "mode": "view"
+    },
+    {
+      "name": "create-snippet",
+      "title": "Create Code Snippet",
+      "subtitle": "Code Saver",
+      "description": "Create new personal/team snippet.",
+      "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "title": "Store Folder",
+      "name": "dbFolder",
+      "description": "Choose the folder you want to create the store in. If you already have one store, please make sure it is named as `code-saver.db` and is under this folder.",
+      "type": "directory",
+      "required": true
+    },
+    {
+      "title": "Backup Dates",
+      "name": "backupDates",
+      "description": "How many days do you want to backup your data?",
+      "type": "dropdown",
+      "data": [
+        { "title": "Past 3 Days", "value": "3Days" },
+        { "title": "Past One Week", "value": "1Week" },
+        { "title": "Past One Month", "value": "1Month" },
+        { "title": "Always Keep", "value": "always" }
+      ],
+      "default": "1Week",
+      "required": true
+    }
+  ],
+  "scripts": {
+    "build": "vici build",
+    "dev": "vici develop"
+  },
+  "dependencies": {
+    "@vicinae/api": "^0.8.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}
