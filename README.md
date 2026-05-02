@@ -20,7 +20,7 @@ A Vicinae extension to store and manage your code snippets.
 
 ## Demo
 
-![Code Saver UI](https://raw.githubusercontent.com/arthur-home/code-saver/main/screenshots/demo.png)
+![Code Saver UI](assets/demo.png)
 
 ## Installation
 
