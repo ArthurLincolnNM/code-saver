@@ -22,7 +22,7 @@ A Vicinae extension to store and manage your code snippets.
 ## Demo
 
 <p align="center">
-  <img src="assets/demo.png" alt="Code Saver UI" />
+  <img src="assets/demo.png" width="650" alt="Code Saver UI" />
 </p>
 
 ## Installation
