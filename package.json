@@ -5,7 +5,7 @@
   "categories": ["Developer Tools", "Productivity"],
   "license": "MIT",
   "author": "Gnosnay",
-  "icon": "extension_icon.png",
+  "icon": "code-saver.png",
   "commands": [
     {
       "name": "search-snippets",

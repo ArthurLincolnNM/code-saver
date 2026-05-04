@@ -1,7 +1,7 @@
 # Code Saver
 <br>
 <p align="center">
-<img src="./assets/extension_icon.png" width="128" height="128" align="center" alt="Code Saver Icon" />
+<img src="./assets/code-saver.png" width="128" height="128" align="center" alt="Code Saver Icon" />
 </p>
 <p align="center">
 A Vicinae extension to store and manage your code snippets.

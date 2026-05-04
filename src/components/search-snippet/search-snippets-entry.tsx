@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { List, Action, ActionPanel, Clipboard, closeMainWindow, Icon, Color } from "@vicinae/api";
+import { List, Action, ActionPanel, Clipboard, closeMainWindow, Icon, Color, Image } from "@vicinae/api";
 import { Snippet } from "../../lib/types/dto";
 import { ItemDetail, getLanguageInfo } from "./item-detail";
 import { deleteSnippetByUUID, useDataFetch, useSnippets } from "../../lib/hooks/use-data-ops";
@@ -106,11 +106,10 @@ function SnippetItem({ snippet, onUpdateSuccess }: SnippetItemProps) {
   // Build accessories array
   const accessories: List.Item.Accessory[] = [];
 
-  // Language badge (most prominent)
+  // Language icon (most prominent)
   if (langInfo) {
     accessories.push({
-      text: langInfo.abbrev,
-      color: langInfo.color,
+      icon: langInfo.iconUrl,
       tooltip: langInfo.lang,
     });
   }

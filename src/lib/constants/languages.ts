@@ -1,49 +1,54 @@
-// Language icons for visual identification
-export const LANGUAGE_ICONS: Record<string, { abbrev: string; color: string }> = {
-  // Popular languages
-  javascript: { abbrev: "JS", color: "#f7df1e" },
-  typescript: { abbrev: "TS", color: "#3178c6" },
-  python: { abbrev: "PY", color: "#3776ab" },
-  rust: { abbrev: "RS", color: "#dea584" },
-  go: { abbrev: "GO", color: "#00add8" },
-  java: { abbrev: "JV", color: "#ed8b00" },
-  kotlin: { abbrev: "KT", color: "#7f52ff" },
-  swift: { abbrev: "SW", color: "#fa7343" },
-  c: { abbrev: "C", color: "#a8b9cc" },
-  "c++": { abbrev: "C+", color: "#00599c" },
-  "c#": { abbrev: "C#", color: "#512bd4" },
-  ruby: { abbrev: "RB", color: "#cc342d" },
-  php: { abbrev: "PH", color: "#777bb4" },
-  html: { abbrev: "HT", color: "#e34f26" },
-  css: { abbrev: "CS", color: "#1572b6" },
-  sql: { abbrev: "SQ", color: "#e38c00" },
-  bash: { abbrev: "SH", color: "#4eaa25" },
-  shell: { abbrev: "SH", color: "#4eaa25" },
-  powershell: { abbrev: "PS", color: "#012456" },
-  dockerfile: { abbrev: "DK", color: "#2496ed" },
-  yaml: { abbrev: "YM", color: "#cb171e" },
-  json: { abbrev: "JS", color: "#292929" },
-  markdown: { abbrev: "MD", color: "#083fa1" },
-  graphql: { abbrev: "GQ", color: "#e10098" },
-  lua: { abbrev: "LU", color: "#000080" },
-  r: { abbrev: "R", color: "#276dc3" },
-  scala: { abbrev: "SC", color: "#dc322f" },
-  haskell: { abbrev: "HS", color: "#5e5086" },
-  elixir: { abbrev: "EX", color: "#6e4a7e" },
-  erlang: { abbrev: "ER", color: "#b83998" },
-  dart: { abbrev: "DT", color: "#0175c2" },
-  objectivec: { abbrev: "OC", color: "#438efb" },
-  // More languages
-  perl: { abbrev: "PL", color: "#39457e" },
-  clojure: { abbrev: "CL", color: "#5881d8" },
-  fsharp: { abbrev: "FS", color: "#b845fc" },
-  groovy: { abbrev: "GV", color: "#4294b6" },
-  gradle: { abbrev: "GD", color: "#02303a" },
-  makefile: { abbrev: "MK", color: "#427819" },
-  vim: { abbrev: "VI", color: "#199f73" },
-  toml: { abbrev: "TM", color: "#9c4121" },
-  xml: { abbrev: "XML", color: "#0060ac" },
+// Language icons from devicon.dev CDN
+export const LANGUAGE_ICONS: Record<string, { icon: string; color: string }> = {
+  javascript: { icon: "javascript", color: "#f7df1e" },
+  typescript: { icon: "typescript", color: "#3178c6" },
+  python: { icon: "python", color: "#3776ab" },
+  rust: { icon: "rust", color: "#dea584" },
+  go: { icon: "go", color: "#00add8" },
+  java: { icon: "java", color: "#ed8b00" },
+  kotlin: { icon: "kotlin", color: "#7f52ff" },
+  swift: { icon: "swift", color: "#fa7343" },
+  c: { icon: "c", color: "#a8b9cc" },
+  "c++": { icon: "cplusplus", color: "#00599c" },
+  "c#": { icon: "csharp", color: "#512bd4" },
+  ruby: { icon: "ruby", color: "#cc342d" },
+  php: { icon: "php", color: "#777bb4" },
+  html: { icon: "html5", color: "#e34f26" },
+  css: { icon: "css3", color: "#1572b6" },
+  sql: { icon: "mysql", color: "#e38c00" },
+  bash: { icon: "bash", color: "#4eaa25" },
+  shell: { icon: "bash", color: "#4eaa25" },
+  powershell: { icon: "powershell", color: "#012456" },
+  dockerfile: { icon: "docker", color: "#2496ed" },
+  yaml: { icon: "yaml", color: "#cb171e" },
+  json: { icon: "json", color: "#292929" },
+  markdown: { icon: "markdown", color: "#083fa1" },
+  graphql: { icon: "graphql", color: "#e10098" },
+  lua: { icon: "lua", color: "#000080" },
+  r: { icon: "r", color: "#276dc3" },
+  scala: { icon: "scala", color: "#dc322f" },
+  haskell: { icon: "haskell", color: "#5e5086" },
+  elixir: { icon: "elixir", color: "#6e4a7e" },
+  erlang: { icon: "erlang", color: "#b83998" },
+  dart: { icon: "dart", color: "#0175c2" },
+  objectivec: { icon: "objectivec", color: "#438efb" },
+  perl: { icon: "perl", color: "#39457e" },
+  clojure: { icon: "clojure", color: "#5881d8" },
+  fsharp: { icon: "fsharp", color: "#b845fc" },
+  groovy: { icon: "groovy", color: "#4294b6" },
+  gradle: { icon: "gradle", color: "#02303a" },
+  makefile: { icon: "gnu", color: "#427819" },
+  vim: { icon: "vim", color: "#199f73" },
+  toml: { icon: "toml", color: "#9c4121" },
+  xml: { icon: "xml", color: "#0060ac" },
 };
+
+// Base URL for devicon CDN
+export const DEVICON_CDN = "https://cdn.jsdelivr.net/gh/devicons/devicon/icons";
+
+export function getIconUrl(iconName: string, version: string = "original.svg"): string {
+  return `${DEVICON_CDN}/${iconName}/${iconName}-${version}`;
+}
 
 // File extension to language name mapping
 export const FILE_EXT_TO_LANG: Record<string, string> = {
@@ -110,7 +115,7 @@ export const FILE_EXT_TO_LANG: Record<string, string> = {
   xml: "xml",
 };
 
-export function getLanguageInfo(fileName: string): { lang: string; abbrev: string; color: string } | null {
+export function getLanguageInfo(fileName: string): { lang: string; icon: string; iconUrl: string; color: string } | null {
   const ext = fileName.split(".").pop()?.toLowerCase();
   if (!ext) return null;
 
@@ -120,5 +125,5 @@ export function getLanguageInfo(fileName: string): { lang: string; abbrev: strin
   const icon = LANGUAGE_ICONS[langName];
   if (!icon) return null;
 
-  return { lang: langName, abbrev: icon.abbrev, color: icon.color };
+  return { lang: langName, icon: icon.icon, iconUrl: getIconUrl(icon.icon), color: icon.color };
 }
