@@ -1,12 +1,18 @@
 import { SnippetMarkdownFormatType } from "../constants/db-name";
 
+export type SnippetFile = {
+  uuid: string;
+  fileName: string;
+  content: string;
+};
+
 export type Snippet = {
   uuid: string;
   createAt: Date;
   updateAt: Date;
   title: string;
-  fileName: string;
-  content: string;
+  description: string;
+  files: SnippetFile[];
   formatType: SnippetMarkdownFormatType;
   library: Library;
   labels: Label[];
@@ -26,8 +32,8 @@ export type Library = {
 export type SnippetReq = {
   uuid?: string;
   title: string;
-  fileName: string;
-  content: string;
+  description?: string;
+  files: SnippetFile[];
   formatType: SnippetMarkdownFormatType;
   libraryUUID: string;
   labelsUUID: string[];

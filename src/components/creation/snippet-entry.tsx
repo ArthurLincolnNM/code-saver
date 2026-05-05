@@ -5,10 +5,13 @@ import { Label, Library } from "../../lib/types/dto";
 import { useNavigation, popToRoot } from "@vicinae/api";
 import UpsertLibraryEntry from "./library-entry";
 import UpsertLabelEntry from "./label-entry";
+import { ManageLibraries } from "./manage-libraries";
+import { ManageLabels } from "./manage-labels";
 
 export interface SnippetValues {
   snippetUUID?: string;
   title: string;
+  description?: string;
   fileName: string;
   content: string;
   formatType: "tldr" | "freestyle";
@@ -33,48 +36,48 @@ export default function UpsertSnippetEntry({ props }: UpsertSnippetEntryProps) {
 
   const { push } = useNavigation();
 
-  async function handleSubmit(values: {
-    title: string;
-    fileName: string;
-    content: string;
-    formatType: "tldr" | "freestyle";
-    libraryUUID: string;
-    labelsUUID: string[];
-  }) {
-    if (!values.title.trim()) {
+  async function handleSubmit(values: Record<string, unknown>) {
+    // Extract labels from checkbox values
+    const labelsUUID = Object.entries(values)
+      .filter(([key, value]) => key.startsWith('label_') && value === true)
+      .map(([key]) => key.replace('label_', ''));
+
+
+    // Validation
+    if (!values.title || !(values.title as string).trim()) {
       setTitleError("Snippet title is required");
       return;
     }
-    if (!values.fileName.trim()) {
+    if (!values.fileName || !(values.fileName as string).trim()) {
       setFileNameError("Filename is required");
       return;
     }
-    if (!values.content.trim()) {
+    if (!values.content || !(values.content as string).trim()) {
       setContentError("Content is required");
       return;
     }
 
     setIsSubmitting(true);
+    
     const response = await upsertSnippet({
       uuid: props?.snippetUUID,
-      title: values.title,
-      fileName: values.fileName,
-      content: values.content,
-      formatType: values.formatType,
-      libraryUUID: values.libraryUUID,
-      labelsUUID: values.labelsUUID,
+      title: (values.title as string).trim(),
+      description: (values.description as string)?.trim() || undefined,
+      files: [{
+        uuid: props?.snippetUUID,
+        fileName: (values.fileName as string).trim(),
+        content: values.content as string,
+      }],
+      formatType: (values.formatType as "tldr" | "freestyle") || "freestyle",
+      libraryUUID: (values.libraryUUID as string) || allLibs?.[0]?.uuid || "",
+      labelsUUID,
     });
+    
     setIsSubmitting(false);
 
     if (response === undefined) {
       showToast(Toast.Style.Success, "Snippet saved", `"${values.title}" was saved.`);
-
-      if (props?.snippetUUID) {
-        props?.onUpdateSuccess?.();
-        popToRoot();
-      } else {
-        popToRoot();
-      }
+      popToRoot();
     } else {
       showToast(Toast.Style.Failure, "Error", response);
     }
@@ -96,6 +99,16 @@ export default function UpsertSnippetEntry({ props }: UpsertSnippetEntryProps) {
             target={<UpsertLabelEntry onSuccess={() => { revalidateLabel(); }} />}
             title="Create Label"
           />
+          <Action.Push
+            icon={Icon.Folder}
+            target={<ManageLibraries />}
+            title="Manage Libraries"
+          />
+          <Action.Push
+            icon={Icon.Tag}
+            target={<ManageLabels />}
+            title="Manage Labels"
+          />
         </ActionPanel>
       }
       navigationTitle={props?.snippetUUID ? "Update Snippet" : "Create Snippet"}
@@ -107,6 +120,13 @@ export default function UpsertSnippetEntry({ props }: UpsertSnippetEntryProps) {
         error={titleError}
         autoFocus
         defaultValue={props?.title ?? ""}
+      />
+      <Form.TextArea
+        id="description"
+        title="Description"
+        placeholder="Optional description (supports markdown)"
+        info="Brief description of what this snippet does"
+        defaultValue={props?.description ?? ""}
       />
       <Form.TextField
         id="fileName"
@@ -141,20 +161,19 @@ export default function UpsertSnippetEntry({ props }: UpsertSnippetEntryProps) {
         ))}
       </Form.Dropdown>
       {allLabels && allLabels.length > 0 && (
-        <Form.TagPicker
-          id="labelsUUID"
-          title="Labels"
-          defaultValue={props?.labelsUUID ?? []}
-        >
+        <>
+          <Form.Separator />
+          <Form.Description text="Labels" />
           {allLabels.map((label) => (
-            <Form.TagPicker.Item
+            <Form.Checkbox
               key={label.uuid}
-              value={label.uuid}
-              title={label.title}
-              icon={{ source: Icon.CircleFilled, tintColor: label.colorHex }}
+              id={`label_${label.uuid}`}
+              label={label.title}
+              defaultValue={props?.labelsUUID?.includes(label.uuid) ?? false}
+              labelStyle={{ color: label.colorHex }}
             />
           ))}
-        </Form.TagPicker>
+        </>
       )}
     </Form>
   );

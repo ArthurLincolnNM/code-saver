@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { List, Form, Action, ActionPanel } from "@vicinae/api";
-import { upsertLibrary, useDataFetch } from "../../lib/hooks/use-data-ops";
+import { Form, Action, ActionPanel } from "@vicinae/api";
+import { upsertLibrary, deleteLibraryByUUID, useDataFetch } from "../../lib/hooks/use-data-ops";
 import { Library } from "../../lib/types/dto";
 import { useNavigation } from "@vicinae/api";
-import InitError from "../init/init-error";
 
 interface UpsertLibraryEntryProps {
   uuid?: string;
@@ -39,12 +38,27 @@ export default function UpsertLibraryEntry({ uuid, name, onSuccess }: UpsertLibr
     }
   }
 
+  async function handleDelete() {
+    if (!uuid) return;
+    const result = await deleteLibraryByUUID(uuid);
+    if (result) {
+      setNameError(result);
+      return;
+    }
+    onSuccess();
+    revalidate();
+    pop();
+  }
+
   return (
     <Form
       isLoading={isLoading || isSubmitting}
       actions={
         <ActionPanel>
           <Action.SubmitForm onSubmit={handleSubmit} title="Save Library" />
+          {uuid && (
+            <Action title="Delete Library" onAction={handleDelete} />
+          )}
         </ActionPanel>
       }
       navigationTitle={uuid ? "Update Library" : "Create Library"}

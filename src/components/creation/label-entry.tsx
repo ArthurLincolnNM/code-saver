@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Form, Action, ActionPanel } from "@vicinae/api";
-import { upsertLabel, useDataFetch } from "../../lib/hooks/use-data-ops";
+import { upsertLabel, deleteLabelByUUID, useDataFetch } from "../../lib/hooks/use-data-ops";
 import { Label } from "../../lib/types/dto";
 import { useNavigation } from "@vicinae/api";
-import InitError from "../init/init-error";
 
 interface UpsertLabelEntryProps {
   uuid?: string;
@@ -45,12 +44,23 @@ export default function UpsertLabelEntry({ uuid, title, colorHex, onSuccess }: U
     }
   }
 
+  async function handleDelete() {
+    if (!uuid) return;
+    await deleteLabelByUUID(uuid);
+    onSuccess();
+    revalidate();
+    pop();
+  }
+
   return (
     <Form
       isLoading={isLoading || isSubmitting}
       actions={
         <ActionPanel>
           <Action.SubmitForm onSubmit={handleSubmit} title="Save Label" />
+          {uuid && (
+            <Action title="Delete Label" onAction={handleDelete} />
+          )}
         </ActionPanel>
       }
       navigationTitle={uuid ? "Update Label" : "Create Label"}

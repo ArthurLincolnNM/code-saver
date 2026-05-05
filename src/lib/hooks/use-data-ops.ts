@@ -6,6 +6,8 @@ import {
   getLibraries,
   saveSnippet,
   deleteSnippet,
+  deleteLabel,
+  deleteLibrary,
   saveLabel,
   saveLibrary,
 } from "../storage/storage";
@@ -66,8 +68,8 @@ export function useSnippets() {
 export async function upsertSnippet(req: {
   uuid?: string;
   title: string;
-  fileName: string;
-  content: string;
+  description?: string;
+  files: { uuid?: string; fileName: string; content: string }[];
   formatType: "tldr" | "freestyle";
   libraryUUID: string;
   labelsUUID: string[];
@@ -85,4 +87,12 @@ export async function upsertLibrary(req: { uuid?: string; name: string }): Promi
 
 export async function deleteSnippetByUUID(uuid: string): Promise<string | undefined> {
   return deleteSnippet(uuid);
+}
+
+export async function deleteLabelByUUID(uuid: string): Promise<string | undefined> {
+  return deleteLabel(uuid);
+}
+
+export async function deleteLibraryByUUID(uuid: string): Promise<string | undefined> {
+  return deleteLibrary(uuid);
 }
